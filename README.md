@@ -1,2 +1,2 @@
 # boorukits
-Unofficial SDK for Danbooru / Moebooru with aiohttp
+boorukits is an unofficial asynchronous library for the APIs of booru-like gallery (eg. Danbooru/Moebooru).
