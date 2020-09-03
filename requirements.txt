@@ -1,0 +1,10 @@
+# Development, documentation & testing requirements.
+black
+flake8
+flake8-quotes
+coverage
+pycodestyle
+pyflakes
+pyroma
+pytest
+pytest-cov
