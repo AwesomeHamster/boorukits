@@ -1,0 +1,42 @@
+name: pytesting
+
+on:
+  push:
+    paths:
+      - '.github/workflows/pytest.yml'
+      - '**.py'
+  pull_request:
+    paths:
+      - '.github/workflows/pytest.yml'
+      - '**.py'
+
+jobs:
+  test:
+
+    strategy:
+      matrix:
+        python: ['3.7', '3.8']
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        # install boorukits as editable package
+        pip install -e .
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --show-source --statistics
+    - name: Test with pytest
+      env:
+        PYTHONPATH: '.:./src'
+      run: |
+        pytest
