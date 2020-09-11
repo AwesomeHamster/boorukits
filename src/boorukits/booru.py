@@ -113,7 +113,7 @@ class BooruImage:
         Returns:
             Union[str, None]: author name
         """
-        return None
+        return self._data_dict.get("author", None)
 
     @property
     def file_url(self) -> Union[str, None]:
@@ -122,7 +122,7 @@ class BooruImage:
         Returns:
             Union[str, None]: Image file url
         """
-        return None
+        return self._data_dict.get("file_url", None)
 
     @property
     def rating(self) -> Union[str, None]:
@@ -133,4 +133,24 @@ class BooruImage:
         Returns:
             Union[str, None]: rating
         """
-        return None
+        return self._data_dict.get("rating", None)
+
+    @property
+    def tags(self) -> str:
+        """Return tags of current image.
+
+        Tags are always splited by spaces
+
+        Returns:
+            str: tags
+        """
+        return self._data_dict.get("tags", "")
+
+    @property
+    def tags_list(self) -> List[str]:
+        """Return tag list of current image.
+
+        Returns:
+            List[str]: tag list
+        """
+        return self.tags.split()

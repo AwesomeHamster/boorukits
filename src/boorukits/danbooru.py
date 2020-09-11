@@ -11,16 +11,8 @@ class DanbooruImage(BooruImage):
         super().__init__(iid, data_dict)
 
     @property
-    def author(self) -> Union[str, None]:
-        return self._data_dict.get("author", None)
-
-    @property
-    def file_url(self) -> Union[str, None]:
-        return self._data_dict.get("file_url", None)
-
-    @property
-    def rating(self) -> Union[str, None]:
-        return self._data_dict.get("rating", None)
+    def tags(self):
+        return self._data_dict.get("tag_string", "")
 
 
 class Danbooru(Booru):
