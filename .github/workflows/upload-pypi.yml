@@ -1,0 +1,35 @@
+name: upload pypi
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - '!v**-alpha*' # do not release when specify as alpha
+      
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Upgrade Packaging Tools
+      run: |
+        python3 -m pip install --user --upgrade setuptools wheel twine
+
+    - name: Generate Python Package
+      run: |
+        python3 setup.py sdist bdist_wheel
+
+    - name: Publish package to TestPyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.test_pypi_token }}
+        repository_url: https://test.pypi.org/legacy/
