@@ -7,7 +7,7 @@ packages = find_packages(where="src")
 
 setup(
     name="boorukits",
-    version="0.0.1",
+    version="0.0.2",
     description="boorukits is an unofficial asynchronous library for the APIs of booru-like gallery (eg. Danbooru/Moebooru).",
     url="https://github.com/MaikoTan/boorukits",
     project_urls={
