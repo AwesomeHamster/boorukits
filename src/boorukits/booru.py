@@ -41,6 +41,29 @@ class Booru:
             "get", url, params=params, headers=headers, data=data, **kwargs
         )
 
+    async def _post(
+        self,
+        url: str,
+        params: Dict[str, str] = None,
+        headers: Dict[str, str] = None,
+        data: Dict[str, str] = None,
+        **kwargs,
+    ) -> Tuple[int, Union[Dict[str, str], None]]:
+        """Send an HTTP POST request
+
+        Args:
+            url (str): URL in string
+            params (Dict[str, str], optional): url params. Defaults to None.
+            headers (Dict[str, str], optional): http headers. Defaults to None.
+            data (Dict[str, str], optional): http body data. Defaults to None.
+
+        Returns:
+            Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
+        """
+        return await self._request(
+            "post", url, params=params, headers=headers, data=data, **kwargs
+        )
+
     async def _request(
         self,
         method: str,
