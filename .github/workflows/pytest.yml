@@ -36,5 +36,7 @@ jobs:
       run: |
         flake8 . --count --show-source --statistics
     - name: Test with pytest
+      env:
+        PYTHONPATH: '.:./src'
       run: |
         pytest
