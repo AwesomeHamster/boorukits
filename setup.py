@@ -33,6 +33,7 @@ setup(
         "Programming Language :: Python :: 3.9",
     ],
     packages=packages,
+    package_dir={"boorukits": "src/boorukits"},
     python_requires=">=3.7",
     platforms=["nt", "posix", "os2"],
     install_requires=["aiohttp>=3.6.2"],
