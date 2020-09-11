@@ -13,3 +13,13 @@ async def test_get_posts():
     assert(len(response) > 0)
     assert(isinstance(response[0], DanbooruImage))
     assert(response[0].file_url)
+
+
+@pytest.mark.asyncio
+async def test_posts():
+    danbooru = Danbooru()
+    response: List[DanbooruImage] = await danbooru.get_posts("yazawa_niko")
+    assert(isinstance(response, list))
+    img = response[0]
+    assert(isinstance(img.tags_list, list))
+    assert(len(img.tags_list) >= 1)
