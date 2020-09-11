@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - '.github/workflows/pytest.yml'
-      - '**.js'
+      - '**.py'
   pull_request:
     paths:
       - '.github/workflows/pytest.yml'
-      - '**.js'
+      - '**.py'
 
 jobs:
   test:
