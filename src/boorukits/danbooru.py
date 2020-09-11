@@ -86,8 +86,8 @@ class Danbooru(Booru):
 
         params: List[str, Any] = {
             "tags": tags,
-            "random": random,
-            "raw": raw,
+            "random": 1 if random else 0,
+            "raw": 1 if raw else 0,
         }
 
         if page: params["page"] = page
