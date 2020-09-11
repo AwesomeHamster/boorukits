@@ -81,7 +81,7 @@ class Danbooru(Booru):
             raw (bool, optional): When this parameter is set the tags parameter will not be parsed for aliased tags, metatags or multiple tags, and will instead be parsed as a single literal tag. Defaults to False.
 
         Returns:
-            List[DanbooruImage]: [description]
+            List[DanbooruImage]: a list contains `DanbooruImage`
         """
 
         params: List[str, Any] = {
@@ -97,13 +97,12 @@ class Danbooru(Booru):
             del params["tags"]
 
         code, response = await self._get(
-            self._api_url + f"/posts.json", params=params, **kwargs,
+            self._api_url + "/posts.json", params=params, **kwargs,
         )
 
         res_list = list()
         for i in response:
             # some post may lacks "id" property,
             # default to "0".
-            res_list.append(DanbooruImage(i.get("id", "0"), i))
+            res_list.append(DanbooruImage(i.get("id", "-1"), i))
         return res_list
-
