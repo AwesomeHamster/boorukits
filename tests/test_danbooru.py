@@ -18,7 +18,7 @@ async def test_get_posts():
 @pytest.mark.asyncio
 async def test_posts():
     danbooru = Danbooru()
-    response: List[DanbooruImage] = await danbooru.get_posts("yazawa_niko")
+    response: List[DanbooruImage] = await danbooru.get_posts("yazawa_nico")
     assert(isinstance(response, list))
     img = response[0]
     assert(isinstance(img.tags_list, list))
