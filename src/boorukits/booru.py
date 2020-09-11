@@ -1,7 +1,7 @@
 """
 Base class for *booru-like gallary
 """
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from asyncio import AbstractEventLoop
 from json import JSONDecodeError
 
