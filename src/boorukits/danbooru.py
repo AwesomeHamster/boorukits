@@ -86,12 +86,15 @@ class Danbooru(Booru):
 
         params: List[str, Any] = {
             "tags": tags,
-            "page": page,
-            "limit": limit,
-            "md5": md5,
             "random": random,
             "raw": raw,
         }
+
+        if page: params["page"] = page
+        if limit: params["limit"] = limit
+        if md5:
+            params["md5"] = md5
+            del params["tags"]
 
         code, response = await self._get(
             self._api_url + f"/posts.json", params=params, **kwargs,
