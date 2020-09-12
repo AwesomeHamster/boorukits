@@ -63,9 +63,9 @@ class Danbooru(Booru):
         self._api_key = api_key
         self._api_url = api_url
 
-
     async def get_post(self, id: str) -> Union[DanbooruImage, None]:
-        """Get a specific post with id
+        """Get a specific post by id.
+        API: /posts/$id.json (when $id is the post id)
 
         Args:
             id (str): The post id
@@ -75,7 +75,9 @@ class Danbooru(Booru):
         """
         params = self._add_api_key({})
 
-        code, response = await self._get(self._api_url + f"/posts/{id}.json", params=params)
+        code, response = await self._get(
+            self._api_url + f"/posts/{id}.json", params=params
+        )
 
         if code == 404:
             # found nothing so return None
@@ -93,7 +95,7 @@ class Danbooru(Booru):
         raw: bool = False,
         **kwargs,
     ) -> List[DanbooruImage]:
-        """get a list of posts. API: /posts.json
+        """Get a list of posts. API: /posts.json
 
         Args:
             tags (str, optional): The tags to search for. Any tag combination that works on the web site will work here. This includes all the meta-tags. Defaults to "".
@@ -115,8 +117,10 @@ class Danbooru(Booru):
 
         params = self._add_api_key(params)
 
-        if page: params["page"] = page
-        if limit: params["limit"] = limit
+        if page:
+            params["page"] = page
+        if limit:
+            params["limit"] = limit
         if md5:
             params["md5"] = md5
             del params["tags"]
@@ -128,16 +132,15 @@ class Danbooru(Booru):
         res_list = list()
         for i in response:
             # some post may lacks "id" property,
-            # default to "0".
+            # default to "-1".
             res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         if self._username and self._api_key:
             new_dict = params.copy()
-            new_dict.update({
-                "login": self._username,
-                "api_key": self._api_key,
-            })
+            new_dict.update(
+                {"login": self._username, "api_key": self._api_key,}
+            )
             return new_dict
         return params
