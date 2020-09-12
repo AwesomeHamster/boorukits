@@ -103,26 +103,31 @@ class BooruImage:
         self._data_dict = data_dict
 
     @property
-    def author(self) -> Union[str, None]:
+    def author(self) -> str:
         """Return author of current image.
 
         name can be English or Japanese? (depends on website)
 
-        Perhaps return None or empty string.
+        Perhaps return empty string.
 
         Returns:
-            Union[str, None]: author name
+            str: author name
         """
-        return self._data_dict.get("author", None)
+        return self._data_dict.get("author", "")
 
     @property
-    def file_url(self) -> Union[str, None]:
+    def file_url(self) -> str:
         """Return download-able url of current image.
 
+        `file_url` is always the largest size of current image.
+
+        If you want a smaller or thumbnail version,
+        please consider `thumbnail_url` or `sample_url`.
+
         Returns:
-            Union[str, None]: Image file url
+            str,: Image file url
         """
-        return self._data_dict.get("file_url", None)
+        return self._data_dict.get("file_url", "")
 
     @property
     def rating(self) -> Union[str, None]:
@@ -134,6 +139,20 @@ class BooruImage:
             Union[str, None]: rating
         """
         return self._data_dict.get("rating", None)
+
+    @property
+    def source(self) -> str:
+        """Return source url of current image.
+
+        In some gallery website, if this image was from a manga,
+        it might return the name of the manga.
+
+        In some case, source would be empty string.
+
+        Returns:
+            str: source url
+        """
+        return self._data_dict.get("source", "")
 
     @property
     def tags(self) -> str:
