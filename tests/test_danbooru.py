@@ -26,7 +26,7 @@ def get_ragular_site_with_api_key():
 async def test_get_posts():
     danboorus: List[Danbooru] = [get_ragular_site(), get_test_site(), get_ragular_site_with_api_key()]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("*"), danboorus))
-    done: List[List[DanbooruImage]] = asyncio.gather(get_posts)
+    done: List[List[DanbooruImage]] = asyncio.gather(*get_posts)
 
     for response in done:
         assert isinstance(response, list)
@@ -39,7 +39,7 @@ async def test_get_posts():
 async def test_posts():
     danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_api_key()]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("yazawa_nico"), danboorus))
-    done: List[List[DanbooruImage]] = asyncio.gather(get_posts)
+    done: List[List[DanbooruImage]] = asyncio.gather(*get_posts)
 
     for response in done:
         assert isinstance(response, list)
