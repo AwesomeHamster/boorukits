@@ -28,12 +28,11 @@ class Danbooru(Booru):
     danbooru.get_posts(limit=10, tags="yazawa_niko*")
     ```
 
-    Note: It is recommanded that testing script on https://testbooru.donmai.us
+    Note: Danbooru recommands to test script on https://testbooru.donmai.us
 
     You can specify the url when you are creating an instance
 
     ```
-    # specify api_url without trailing slash `/`
     danbooru = Danbooru(api_url="https://testbooru.donmai.us")
     danbooru.get_posts()
     ```
@@ -47,6 +46,18 @@ class Danbooru(Booru):
         api_url: str = API_URL,
         loop: Optional[AbstractEventLoop] = None,
     ):
+        """Create an instance of Danbooru.
+
+        The default API URL is https://danbooru.donmai.us/ .
+
+        You can also specify other URL by passing `api_url` parameter.
+
+        Args:
+            username (str, optional): User name/id of danbooru. Defaults to None.
+            api_key (str, optional): API Key of danbooru. Defaults to None.
+            api_url (str, optional): API URL root. Defaults to API_URL.
+            loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
+        """
         super(Danbooru, self).__init__(loop)
         self._username = username
         self._api_key = api_key
