@@ -119,6 +119,11 @@ class BooruImage:
     def file_url(self) -> Union[str, None]:
         """Return download-able url of current image.
 
+        `file_url` is always the largest size of current image.
+
+        If you want a smaller or thumbnail version,
+        please consider `thumbnail_url` or `sample_url`.
+
         Returns:
             Union[str, None]: Image file url
         """
@@ -134,6 +139,20 @@ class BooruImage:
             Union[str, None]: rating
         """
         return self._data_dict.get("rating", None)
+
+    @property
+    def source(self) -> str:
+        """Return source url of current image.
+
+        In some gallery website, if this image was from a manga,
+        it might return the name of the manga.
+
+        In some case, source would be empty string.
+
+        Returns:
+            str: source url
+        """
+        return self._data_dict.get("source", "")
 
     @property
     def tags(self) -> str:

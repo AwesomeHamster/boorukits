@@ -18,6 +18,7 @@ def get_test_site():
 def get_ragular_site_with_api_key():
     user = os.environ.get("DANBOORU_USER", None)
     token = os.environ.get("DANBOORU_TOKEN", None)
+    # assume token is passed
     assert user and token
     return Danbooru(username=user, api_key=token)
 
