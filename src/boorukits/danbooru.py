@@ -69,7 +69,7 @@ class Danbooru(Booru):
 
         code, response = await self._get(self._api_url + f"/posts/{id}.json", params=params)
 
-        return DanbooruImage(response.get("id"), response)
+        return DanbooruImage(str(response.get("id")), response)
 
     async def get_posts(
         self,
@@ -117,7 +117,7 @@ class Danbooru(Booru):
         for i in response:
             # some post may lacks "id" property,
             # default to "0".
-            res_list.append(DanbooruImage(i.get("id", "-1"), i))
+            res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
