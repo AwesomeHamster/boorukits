@@ -33,11 +33,16 @@ async def test_get_posts():
         assert isinstance(response, list)
         assert len(response) > 0
         assert isinstance(response[0], DanbooruImage)
-        assert response[0].file_url
+
+        img: DanbooruImage = response[0]
+        assert img.tags
+        assert isinstance(img.tags_list, list)
+        assert len(img.tags_list) >= 1
+        assert img.file_url
 
 
 @pytest.mark.asyncio
-async def test_posts():
+async def test_posts_with_tags():
     danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_api_key()]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("yazawa_nico"), danboorus))
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
