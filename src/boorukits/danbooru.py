@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from asyncio import AbstractEventLoop
 
 from .booru import Booru, BooruImage
@@ -82,6 +82,8 @@ class Danbooru(Booru):
             "raw": 1 if raw else 0,
         }
 
+        params = self._add_api_key(params)
+
         if page: params["page"] = page
         if limit: params["limit"] = limit
         if md5:
@@ -98,3 +100,13 @@ class Danbooru(Booru):
             # default to "0".
             res_list.append(DanbooruImage(i.get("id", "-1"), i))
         return res_list
+
+    def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
+        if self._username and self._api_key:
+            new_dict = params.copy()
+            new_dict.update({
+                "login": self._username,
+                "api_key": self._api_key,
+            })
+            return new_dict
+        return params
