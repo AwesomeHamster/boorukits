@@ -63,6 +63,14 @@ class Danbooru(Booru):
         self._api_key = api_key
         self._api_url = api_url
 
+
+    async def get_post(self, id: str) -> Union[DanbooruImage, None]:
+        params = self._add_api_key({})
+
+        code, response = await self._get(self._api_url + f"/posts/{id}.json", params=params)
+
+        return DanbooruImage(response.get("id"), response)
+
     async def get_posts(
         self,
         tags: str = "",

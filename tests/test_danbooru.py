@@ -25,7 +25,11 @@ def get_ragular_site_with_api_key():
 
 @pytest.mark.asyncio
 async def test_get_posts():
-    danboorus: List[Danbooru] = [get_ragular_site(), get_test_site(), get_ragular_site_with_api_key()]
+    danboorus: List[Danbooru] = [
+        get_ragular_site(),
+        get_test_site(),
+        get_ragular_site_with_api_key(),
+    ]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("*"), danboorus))
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
 
@@ -52,3 +56,16 @@ async def test_posts_with_tags():
         img = response[0]
         assert isinstance(img.tags_list, list)
         assert len(img.tags_list) >= 1
+
+
+@pytest.mark.asyncio
+async def test_post_by_id():
+    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_api_key()]
+    # https://danbooru.donmai.us/posts/3134895
+    # kokkoro from pricess connect!
+    get_post = list(map(lambda danbooru: danbooru.get_post("3134895"), danboorus))
+    done: List[DanbooruImage] = await asyncio.gather(*get_post)
+
+    for response in done:
+        assert isinstance(response, DanbooruImage)
+        assert response.id == "3134895"
