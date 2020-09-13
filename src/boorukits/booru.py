@@ -141,6 +141,15 @@ class BooruImage:
         return self._data_dict.get("rating", None)
 
     @property
+    def sample_url(self) -> str:
+        """Return download-able url of current image.
+
+        Returns:
+            str,: Image sample url
+        """
+        return self._data_dict.get("sample_url", "")
+
+    @property
     def source(self) -> str:
         """Return source url of current image.
 

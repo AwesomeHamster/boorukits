@@ -11,6 +11,10 @@ class DanbooruImage(BooruImage):
         super().__init__(iid, data_dict)
 
     @property
+    def sample_url(self):
+        return self._data_dict.get("large_file_url", "")
+
+    @property
     def tags(self):
         return self._data_dict.get("tag_string", "")
 
