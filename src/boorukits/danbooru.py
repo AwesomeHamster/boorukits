@@ -141,7 +141,7 @@ class Danbooru(Booru):
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        if self._username and self._api_key:
+        if self._user and self._token:
             new_dict = params.copy()
             new_dict.update(
                 {"login": self._user, "api_key": self._token,}
