@@ -12,15 +12,15 @@ def get_ragular_site():
 
 
 def get_test_site():
-    return Danbooru(api_url="https://testbooru.donmai.us")
+    return Danbooru(root_url="https://testbooru.donmai.us")
 
 
-def get_ragular_site_with_api_key():
+def get_ragular_site_with_token():
     user = os.environ.get("DANBOORU_USER", None)
     token = os.environ.get("DANBOORU_TOKEN", None)
     # assume token is passed
     assert user and token
-    return Danbooru(username=user, api_key=token)
+    return Danbooru(user=user, token=token)
 
 
 @pytest.mark.asyncio
@@ -28,7 +28,7 @@ async def test_get_posts():
     danboorus: List[Danbooru] = [
         get_ragular_site(),
         get_test_site(),
-        get_ragular_site_with_api_key(),
+        get_ragular_site_with_token(),
     ]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("*"), danboorus))
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
@@ -47,7 +47,7 @@ async def test_get_posts():
 
 @pytest.mark.asyncio
 async def test_posts_with_tags():
-    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_api_key()]
+    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_token()]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("yazawa_nico"), danboorus))
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
 
@@ -60,7 +60,7 @@ async def test_posts_with_tags():
 
 @pytest.mark.asyncio
 async def test_post_by_id():
-    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_api_key()]
+    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_token()]
     # https://danbooru.donmai.us/posts/3134895
     # kokkoro from pricess connect!
     get_post = list(map(lambda danbooru: danbooru.get_post("3134895"), danboorus))
@@ -69,3 +69,4 @@ async def test_post_by_id():
     for response in done:
         assert isinstance(response, DanbooruImage)
         assert response.id == "3134895"
+        assert response.file_url

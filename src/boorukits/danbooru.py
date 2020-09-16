@@ -41,27 +41,27 @@ class Danbooru(Booru):
 
     def __init__(
         self,
-        username: str = None,
-        api_key: str = None,
-        api_url: str = API_URL,
+        user: str = None,
+        token: str = None,
+        root_url: str = API_URL,
         loop: Optional[AbstractEventLoop] = None,
     ):
         """Create an instance of Danbooru.
 
-        The default API URL is https://danbooru.donmai.us/ .
+        The default URL root is https://danbooru.donmai.us/ .
 
-        You can also specify other URL by passing `api_url` parameter.
+        You can also specify other URL by passing `root_url` parameter.
 
         Args:
-            username (str, optional): User name/id of danbooru. Defaults to None.
-            api_key (str, optional): API Key of danbooru. Defaults to None.
-            api_url (str, optional): API URL root. Defaults to API_URL.
+            user (str, optional): User name/id of danbooru. Defaults to None.
+            token (str, optional): API Key of danbooru. Defaults to None.
+            root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
         super(Danbooru, self).__init__(loop)
-        self._username = username
-        self._api_key = api_key
-        self._api_url = api_url
+        self._user = user
+        self._token = token
+        self._root_url = root_url
 
     async def get_post(self, id: str) -> Union[DanbooruImage, None]:
         """Get a specific post by id.
@@ -76,7 +76,7 @@ class Danbooru(Booru):
         params = self._add_api_key({})
 
         code, response = await self._get(
-            self._api_url + f"/posts/{id}.json", params=params
+            self._root_url + f"/posts/{id}.json", params=params
         )
 
         if code == 404:
@@ -126,7 +126,7 @@ class Danbooru(Booru):
             del params["tags"]
 
         code, response = await self._get(
-            self._api_url + "/posts.json", params=params, **kwargs,
+            self._root_url + "/posts.json", params=params, **kwargs,
         )
 
         res_list = list()
@@ -140,7 +140,7 @@ class Danbooru(Booru):
         if self._username and self._api_key:
             new_dict = params.copy()
             new_dict.update(
-                {"login": self._username, "api_key": self._api_key,}
+                {"login": self._user, "api_key": self._token,}
             )
             return new_dict
         return params
