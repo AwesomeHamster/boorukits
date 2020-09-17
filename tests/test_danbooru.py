@@ -70,3 +70,5 @@ async def test_post_by_id():
         assert isinstance(response, DanbooruImage)
         assert response.id == "3134895"
         assert response.file_url
+        assert response.sample_url
+        assert response.thumbnail_url
