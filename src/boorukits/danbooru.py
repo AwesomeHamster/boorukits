@@ -18,6 +18,10 @@ class DanbooruImage(BooruImage):
     def tags(self):
         return self._data_dict.get("tag_string", "")
 
+    @property
+    def thumbnail_url(self) -> str:
+        return self._data_dict.get("preview_file_url", "")
+
 
 class Danbooru(Booru):
     """

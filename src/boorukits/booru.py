@@ -149,6 +149,7 @@ class BooruImage:
         """
         return self._data_dict.get("sample_url", "")
 
+
     @property
     def source(self) -> str:
         """Return source url of current image.
@@ -182,3 +183,12 @@ class BooruImage:
             List[str]: tag list
         """
         return self.tags.split()
+
+    @property
+    def thumbnail_url(self) -> str:
+        """Return download-able thumbnail url of current image.
+
+        Returns:
+            str,: Image thumbnail url
+        """
+        return self._data_dict.get("thumbnail_url", "")
