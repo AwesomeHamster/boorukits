@@ -1,5 +1,5 @@
-from typing import Any, Dict, List, Optional, Union
 from asyncio import AbstractEventLoop
+from typing import Any, Dict, List, Optional, Union
 
 from .booru import Booru, BooruImage
 
