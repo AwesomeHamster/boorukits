@@ -35,6 +35,7 @@ class Gelbooru(Booru):
             "page": "dapi",
             "s": "post",
             "q": "index",
+            "json": 1,
         }
 
         params = self._add_api_key(params)
