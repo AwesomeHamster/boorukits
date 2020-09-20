@@ -1,5 +1,4 @@
 # Development, documentation & testing requirements.
-black
 flake8
 flake8-quotes
 coverage
@@ -11,3 +10,4 @@ pytest-cov
 pytest-xdist
 pytest-asyncio
 virtualenv
+yapf
