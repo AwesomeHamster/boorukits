@@ -1,10 +1,9 @@
 from typing import List
-import os
-import asyncio
 
 import pytest
 
 from boorukits import Gelbooru, GelbooruImage
+
 
 @pytest.mark.asyncio
 async def test_get_posts():
