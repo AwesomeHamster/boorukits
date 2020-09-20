@@ -8,6 +8,13 @@ API_URL = "https://gelbooru.com/"
 class GelbooruImage(BooruImage):
     def __init__(self, iid: str, data_dict: Dict[str, Any]):
         super().__init__(iid, data_dict)
+    
+    @property
+    def source(self) -> str:
+        # there might be multiple source urls,
+        # seperated by space
+        sources = self._data_dict.get("source", "")
+        return sources.split()[0]
 
 
 class Gelbooru(Booru):
