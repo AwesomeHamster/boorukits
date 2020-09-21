@@ -6,6 +6,7 @@ API_URL = "https://gelbooru.com/"
 
 
 class GelbooruImage(BooruImage):
+
     def __init__(self, iid: str, data_dict: Dict[str, Any]):
         super().__init__(iid, data_dict)
 
@@ -22,8 +23,13 @@ class Gelbooru(Booru):
 
     See also: https://gelbooru.com/index.php?page=wiki&s=view&id=18780
     """
+
     def __init__(
-        self, user: str = None, token: str = None, root_url: str = API_URL, loop=None,
+        self,
+        user: str = None,
+        token: str = None,
+        root_url: str = API_URL,
+        loop=None,
     ):
         super().__init__(loop=loop)
         self._user = user
@@ -42,12 +48,11 @@ class Gelbooru(Booru):
         params = self._add_api_key(params)
 
         code, response = await self._get(self._root_url + "/index.php",
-                                         params=params)
+            params=params)
 
         # gelbooru would return a list even specify an id.
         res_image = response[0]
         return GelbooruImage(str(res_image.get("id", "-1")), res_image)
-
 
     async def get_posts(
         self,
@@ -71,7 +76,9 @@ class Gelbooru(Booru):
         if limit:
             params["limit"] = limit
 
-        code, response = await self._get(self._root_url + "/index.php", params=params, **kwargs)
+        code, response = await self._get(self._root_url + "/index.php",
+            params=params,
+            **kwargs)
 
         res_list = list()
         for i in response:
@@ -83,8 +90,9 @@ class Gelbooru(Booru):
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         if self._user and self._token:
             new_dict = params.copy()
-            new_dict.update(
-                {"user_id": self._user, "api_key": self._token,}
-            )
+            new_dict.update({
+                "user_id": self._user,
+                "api_key": self._token,
+            })
             return new_dict
         return params
