@@ -47,19 +47,31 @@ class Gelbooru(Booru):
         # gelbooru would return a list even specify an id.
         res_image = response[0]
         return GelbooruImage(str(res_image.get("id", "-1")), res_image)
-        
 
-    async def get_posts(self, tags: str = "") -> Union[List[GelbooruImage], None]:
+
+    async def get_posts(
+        self,
+        tags: str = "",
+        page: int = None,
+        limit: int = None,
+        **kwargs,
+    ) -> Union[List[GelbooruImage], None]:
         params = {
             "page": "dapi",
             "s": "post",
             "q": "index",
+            "tags": tags,
             "json": 1,
         }
 
         params = self._add_api_key(params)
 
-        code, response = await self._get(self._root_url + "/index.php", params=params)
+        if page:
+            params["pid"] = page
+        if limit:
+            params["limit"] = limit
+
+        code, response = await self._get(self._root_url + "/index.php", params=params, **kwargs)
 
         res_list = list()
         for i in response:
@@ -72,7 +84,7 @@ class Gelbooru(Booru):
         if self._user and self._token:
             new_dict = params.copy()
             new_dict.update(
-                {"login": self._user, "api_key": self._token,}
+                {"user_id": self._user, "api_key": self._token,}
             )
             return new_dict
         return params
