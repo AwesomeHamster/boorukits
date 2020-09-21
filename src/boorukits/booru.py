@@ -1,9 +1,9 @@
 """
 Base class for *booru-like gallary
 """
-from typing import Any, Dict, List, Optional, Tuple, Union
 from asyncio import AbstractEventLoop
 from json import JSONDecodeError
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from aiohttp import ClientSession
 
@@ -14,7 +14,8 @@ class Booru:
     """
 
     def __init__(
-        self, loop: Optional[AbstractEventLoop] = None,
+        self,
+        loop: Optional[AbstractEventLoop] = None,
     ):
         self._loop = loop
 
@@ -37,9 +38,12 @@ class Booru:
         Returns:
             Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
         """
-        return await self._request(
-            "get", url, params=params, headers=headers, data=data, **kwargs
-        )
+        return await self._request("get",
+            url,
+            params=params,
+            headers=headers,
+            data=data,
+            **kwargs)
 
     async def _post(
         self,
@@ -60,9 +64,12 @@ class Booru:
         Returns:
             Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
         """
-        return await self._request(
-            "post", url, params=params, headers=headers, data=data, **kwargs
-        )
+        return await self._request("post",
+            url,
+            params=params,
+            headers=headers,
+            data=data,
+            **kwargs)
 
     async def _request(
         self,
@@ -86,9 +93,11 @@ class Booru:
             Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
         """
         async with ClientSession(loop=self._loop) as session:
-            async with session.request(
-                method, url, params=params, headers=headers, **kwargs
-            ) as response:
+            async with session.request(method,
+                url,
+                params=params,
+                headers=headers,
+                **kwargs) as response:
                 try:
                     return response.status, await response.json()
                 except JSONDecodeError:
@@ -96,8 +105,11 @@ class Booru:
 
 
 class BooruImage:
+
     def __init__(
-        self, iid: str, data_dict: Dict[str, Any],
+        self,
+        iid: str,
+        data_dict: Dict[str, Any],
     ):
         self.id = iid
         self._data_dict = data_dict
@@ -148,7 +160,6 @@ class BooruImage:
             str,: Image sample url
         """
         return self._data_dict.get("sample_url", "")
-
 
     @property
     def source(self) -> str:
