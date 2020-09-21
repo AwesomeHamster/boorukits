@@ -8,7 +8,7 @@ API_URL = "https://gelbooru.com/"
 class GelbooruImage(BooruImage):
     def __init__(self, iid: str, data_dict: Dict[str, Any]):
         super().__init__(iid, data_dict)
-    
+
     @property
     def source(self) -> str:
         # there might be multiple source urls,
@@ -29,6 +29,25 @@ class Gelbooru(Booru):
         self._user = user
         self._token = token
         self._root_url = root_url
+
+    async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
+        params = {
+            "page": "dapi",
+            "s": "post",
+            "q": "index",
+            "json": 1,
+            "id": id,
+        }
+
+        params = self._add_api_key(params)
+
+        code, response = await self._get(self._root_url + "/index.php",
+                                         params=params)
+
+        # gelbooru would return a list even specify an id.
+        res_image = response[0]
+        return GelbooruImage(str(res_image.get("id", "-1")), res_image)
+        
 
     async def get_posts(self, tags: str = "") -> Union[List[GelbooruImage], None]:
         params = {
