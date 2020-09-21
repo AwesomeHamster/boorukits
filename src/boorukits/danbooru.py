@@ -7,6 +7,7 @@ API_URL = "https://danbooru.donmai.us/"
 
 
 class DanbooruImage(BooruImage):
+
     def __init__(self, iid, data_dict):
         super().__init__(iid, data_dict)
 
@@ -83,9 +84,8 @@ class Danbooru(Booru):
         """
         params = self._add_api_key({})
 
-        code, response = await self._get(
-            self._root_url + f"/posts/{id}.json", params=params
-        )
+        code, response = await self._get(self._root_url + f"/posts/{id}.json",
+            params=params)
 
         if code == 404:
             # found nothing so return None
@@ -117,7 +117,7 @@ class Danbooru(Booru):
             List[DanbooruImage]: a list contains `DanbooruImage`
         """
 
-        params: List[str, Any] = {
+        params: Dict[str, Any] = {
             "tags": tags,
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
@@ -134,7 +134,9 @@ class Danbooru(Booru):
             del params["tags"]
 
         code, response = await self._get(
-            self._root_url + "/posts.json", params=params, **kwargs,
+            self._root_url + "/posts.json",
+            params=params,
+            **kwargs,
         )
 
         res_list = list()
@@ -147,8 +149,9 @@ class Danbooru(Booru):
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         if self._user and self._token:
             new_dict = params.copy()
-            new_dict.update(
-                {"login": self._user, "api_key": self._token,}
-            )
+            new_dict.update({
+                "login": self._user,
+                "api_key": self._token,
+            })
             return new_dict
         return params

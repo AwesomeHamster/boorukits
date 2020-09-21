@@ -47,8 +47,11 @@ async def test_get_posts():
 
 @pytest.mark.asyncio
 async def test_posts_with_tags():
-    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_token()]
-    get_posts = list(map(lambda danbooru: danbooru.get_posts("yazawa_nico"), danboorus))
+    danboorus: List[Danbooru] = [
+        get_ragular_site(), get_ragular_site_with_token()
+    ]
+    get_posts = list(
+        map(lambda danbooru: danbooru.get_posts("yazawa_nico"), danboorus))
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
 
     for response in done:
@@ -60,10 +63,13 @@ async def test_posts_with_tags():
 
 @pytest.mark.asyncio
 async def test_post_by_id():
-    danboorus: List[Danbooru] = [get_ragular_site(), get_ragular_site_with_token()]
+    danboorus: List[Danbooru] = [
+        get_ragular_site(), get_ragular_site_with_token()
+    ]
     # https://danbooru.donmai.us/posts/3134895
     # kokkoro from pricess connect!
-    get_post = list(map(lambda danbooru: danbooru.get_post("3134895"), danboorus))
+    get_post = list(
+        map(lambda danbooru: danbooru.get_post("3134895"), danboorus))
     done: List[DanbooruImage] = await asyncio.gather(*get_post)
 
     for response in done:
