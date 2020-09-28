@@ -96,3 +96,12 @@ class Gelbooru(Booru):
             })
             return new_dict
         return params
+
+
+class Safebooru(Gelbooru):
+    """Wrap API of Safebooru (https://safebooru.org/)
+
+    Safebooru is the same as gelbooru,
+    so we just inherit it.
+    """
+    pass
