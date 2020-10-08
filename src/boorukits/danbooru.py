@@ -132,6 +132,7 @@ class Danbooru(Booru):
         if md5:
             params["md5"] = md5
             del params["tags"]
+        params = self._fill_dict()
 
         code, response = await self._get(
             self._root_url + "/posts.json",
@@ -148,10 +149,8 @@ class Danbooru(Booru):
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         if self._user and self._token:
-            new_dict = params.copy()
-            new_dict.update({
+            return self._fill_dict(params, {
                 "login": self._user,
                 "api_key": self._token,
             })
-            return new_dict
         return params

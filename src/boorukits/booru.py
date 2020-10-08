@@ -103,6 +103,26 @@ class Booru:
                 except JSONDecodeError:
                     return response.status, None
 
+    def _fill_dict(
+        self,
+        original_dict: Dict[str, Any],
+        new_params: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Fill parameters into dict and return a new one
+
+        Args:
+            original_dict (Dict[str, Any]): The original dict
+            new_params (Dict[str, Any]): Parameters
+
+        Returns:
+            Dict[str, Any]: A new dict
+        """
+        new_dict = original_dict.copy()
+        for k, v in new_params:
+            if v:
+                new_dict[k] = v
+        return new_dict
+
 
 class BooruImage:
 
