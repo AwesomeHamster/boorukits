@@ -123,16 +123,15 @@ class Danbooru(Booru):
             "raw": 1 if raw else 0,
         }
 
-        params = self._add_api_key(params)
-
-        if page:
-            params["page"] = page
-        if limit:
-            params["limit"] = limit
-        if md5:
-            params["md5"] = md5
-            del params["tags"]
-        params = self._fill_dict()
+        params = self._fill_dict(params, {
+            # api key
+            "login": self._user,
+            "api_key": self._token,
+            # other possible parameters
+            "page": page,
+            "limit": limit,
+            "md5": md5,
+        })
 
         code, response = await self._get(
             self._root_url + "/posts.json",
@@ -147,10 +146,3 @@ class Danbooru(Booru):
             res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
         return res_list
 
-    def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        if self._user and self._token:
-            return self._fill_dict(params, {
-                "login": self._user,
-                "api_key": self._token,
-            })
-        return params
