@@ -99,7 +99,7 @@ class Booru:
                 url,
                 params=params,
                 headers=headers,
-                proxy=self.proxy
+                proxy=self.proxy,
                 **kwargs) as response:
                 try:
                     return response.status, await response.json()
