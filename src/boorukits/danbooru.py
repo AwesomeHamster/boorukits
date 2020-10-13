@@ -145,4 +145,3 @@ class Danbooru(Booru):
             # default to "-1".
             res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
         return res_list
-
