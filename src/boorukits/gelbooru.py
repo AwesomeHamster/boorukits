@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from .booru import Booru, BooruImage
 
@@ -29,9 +29,10 @@ class Gelbooru(Booru):
         user: str = None,
         token: str = None,
         root_url: str = API_URL,
+        proxy: Optional[str] = None,
         loop=None,
     ):
-        super().__init__(loop=loop)
+        super().__init__(proxy=proxy, loop=loop)
         self._user = user
         self._token = token
         self._root_url = root_url

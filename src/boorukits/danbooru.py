@@ -53,6 +53,7 @@ class Danbooru(Booru):
         user: str = None,
         token: str = None,
         root_url: str = API_URL,
+        proxy: Optional[str] = None,
         loop: Optional[AbstractEventLoop] = None,
     ):
         """Create an instance of Danbooru.
@@ -67,7 +68,7 @@ class Danbooru(Booru):
             root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
-        super(Danbooru, self).__init__(loop)
+        super(Danbooru, self).__init__(proxy=proxy, loop=loop)
         self._user = user
         self._token = token
         self._root_url = root_url
