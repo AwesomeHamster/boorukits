@@ -118,7 +118,7 @@ class Booru:
             Dict[str, Any]: A new dict
         """
         new_dict = original_dict.copy()
-        for k, v in new_params:
+        for k, v in new_params.items():
             if k and v:
                 new_dict[k] = v
         return new_dict

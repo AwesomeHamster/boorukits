@@ -82,7 +82,11 @@ class Danbooru(Booru):
         Returns:
             Union[DanbooruImage, None]: DanbooruImage
         """
-        params = self._add_api_key({})
+        params = self._fill_dict({}, {
+            # api key
+            "login": self._user,
+            "api_key": self._token,
+        })
 
         code, response = await self._get(self._root_url + f"/posts/{id}.json",
             params=params)

@@ -88,14 +88,10 @@ class Gelbooru(Booru):
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        if self._user and self._token:
-            new_dict = params.copy()
-            new_dict.update({
-                "user_id": self._user,
-                "api_key": self._token,
-            })
-            return new_dict
-        return params
+        return self._fill_dict(params, {
+            "user_id": self._user,
+            "api_key": self._token,
+        })
 
 
 class Safebooru(Gelbooru):
