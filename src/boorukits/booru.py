@@ -119,7 +119,7 @@ class Booru:
         """
         new_dict = original_dict.copy()
         for k, v in new_params:
-            if v:
+            if k and v:
                 new_dict[k] = v
         return new_dict
 
