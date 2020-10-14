@@ -8,6 +8,7 @@ from boorukits import Danbooru, DanbooruImage
 
 PROXY = os.environ.get("HTTP_PROXY", None)
 
+
 def get_ragular_site():
     return Danbooru(proxy=PROXY)
 
