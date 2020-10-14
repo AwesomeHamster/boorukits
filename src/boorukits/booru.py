@@ -102,7 +102,8 @@ class Booru:
                 proxy=self.proxy,
                 **kwargs) as response:
                 try:
-                    return response.status, await response.json()
+                    return response.status, await response.json(
+                        content_type=None)
                 except JSONDecodeError:
                     return response.status, None
 
