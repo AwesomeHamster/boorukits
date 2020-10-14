@@ -113,6 +113,7 @@ class Safebooru(Gelbooru):
     Safebooru is the same as gelbooru,
     so we just inherit it.
     """
+
     def __init__(
         self,
         user: str = None,
@@ -121,13 +122,11 @@ class Safebooru(Gelbooru):
         proxy: Optional[str] = None,
         loop=None,
     ) -> None:
-        super().__init__(
-            user=user,
+        super().__init__(user=user,
             token=token,
             root_url=root_url,
             proxy=proxy,
-            loop=loop
-        )
+            loop=loop)
 
     async def get_post(self, id: str = "") -> Union[SafebooruImage, None]:
         params = {
