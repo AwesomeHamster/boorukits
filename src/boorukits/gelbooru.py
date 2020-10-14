@@ -102,9 +102,9 @@ class SafebooruImage(GelbooruImage):
     @property
     def file_url(self):
         return SAFEBOORU_API_URL + \
-        self._data_dict.get("directory", "") + \
-        "/" + \
-        self._data_dict.get("image", "")
+            self._data_dict.get("directory", "") + \
+            "/" + \
+            self._data_dict.get("image", "")
 
 
 class Safebooru(Gelbooru):
