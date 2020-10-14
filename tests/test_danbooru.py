@@ -6,13 +6,14 @@ import pytest
 
 from boorukits import Danbooru, DanbooruImage
 
+PROXY = os.environ.get("HTTP_PROXY", None)
 
 def get_ragular_site():
-    return Danbooru()
+    return Danbooru(proxy=PROXY)
 
 
 def get_test_site():
-    return Danbooru(root_url="https://testbooru.donmai.us")
+    return Danbooru(root_url="https://testbooru.donmai.us", proxy=PROXY)
 
 
 def get_ragular_site_with_token():
@@ -20,7 +21,7 @@ def get_ragular_site_with_token():
     token = os.environ.get("DANBOORU_TOKEN", None)
     # assume token is passed
     assert user and token
-    return Danbooru(user=user, token=token)
+    return Danbooru(user=user, token=token, proxy=PROXY)
 
 
 @pytest.mark.asyncio
