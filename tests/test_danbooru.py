@@ -14,10 +14,6 @@ def get_ragular_site():
     return Danbooru(proxy=PROXY)
 
 
-def get_test_site():
-    return Danbooru(root_url="https://testbooru.donmai.us", proxy=PROXY)
-
-
 def get_ragular_site_with_token():
     user = os.environ.get("DANBOORU_USER", None)
     token = os.environ.get("DANBOORU_TOKEN", None)
@@ -30,7 +26,6 @@ def get_ragular_site_with_token():
 async def test_get_posts():
     danboorus: List[Danbooru] = [
         get_ragular_site(),
-        get_test_site(),
         get_ragular_site_with_token(),
     ]
     get_posts = list(map(lambda danbooru: danbooru.get_posts("*"), danboorus))
