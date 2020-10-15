@@ -15,10 +15,16 @@ class Booru:
 
     def __init__(
         self,
+        user: str = None,
+        token: str = None,
+        root_url: str = None,
         proxy: Optional[str] = None,
         loop: Optional[AbstractEventLoop] = None,
     ):
-        self.proxy = proxy
+        self._user = user
+        self._token = token
+        self._root_url = root_url
+        self._proxy = proxy
         self._loop = loop
 
     async def _get(
@@ -109,7 +115,7 @@ class Booru:
                 headers=_headers,
                 json=_json,
                 data=data,
-                proxy=self.proxy,
+                proxy=self._proxy,
                 **kwargs) as response:
                 try:
                     return response.status, await response.json(

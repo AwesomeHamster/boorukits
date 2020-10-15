@@ -32,10 +32,11 @@ class Gelbooru(Booru):
         proxy: Optional[str] = None,
         loop=None,
     ):
-        super().__init__(proxy=proxy, loop=loop)
-        self._user = user
-        self._token = token
-        self._root_url = root_url
+        super().__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
 
     async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
         params = self._add_api_key({

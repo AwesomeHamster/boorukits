@@ -68,10 +68,11 @@ class Danbooru(Booru):
             root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
-        super(Danbooru, self).__init__(proxy=proxy, loop=loop)
-        self._user = user
-        self._token = token
-        self._root_url = root_url
+        super(Danbooru, self).__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
 
     async def get_post(self, id: str) -> Union[DanbooruImage, None]:
         """Get a specific post by id.
