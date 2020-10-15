@@ -15,10 +15,6 @@ on:
 jobs:
   test:
 
-    strategy:
-      matrix:
-        python: ['3.7', '3.8']
-
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +22,7 @@ jobs:
 
     - uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python }}
+        python-version: '3.8'
 
     # Cache pip dependencies
     # See also: https://github.com/actions/cache/blob/main/examples.md#python---pip
