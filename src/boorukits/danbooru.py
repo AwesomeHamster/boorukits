@@ -83,7 +83,7 @@ class Danbooru(Booru):
         Returns:
             Union[DanbooruImage, None]: DanbooruImage
         """
-        params = self._fill_dict({}, {
+        params = self._remove_dict_none_items({
             # api key
             "login": self._user,
             "api_key": self._token,
@@ -122,13 +122,10 @@ class Danbooru(Booru):
             List[DanbooruImage]: a list contains `DanbooruImage`
         """
 
-        params: Dict[str, Any] = {
+        params = self._remove_dict_none_items({
             "tags": tags,
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
-        }
-
-        params = self._fill_dict(params, {
             # api key
             "login": self._user,
             "api_key": self._token,

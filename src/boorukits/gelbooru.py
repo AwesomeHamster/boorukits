@@ -64,20 +64,17 @@ class Gelbooru(Booru):
         limit: int = None,
         **kwargs,
     ) -> Union[List[GelbooruImage], None]:
-        params = {
+        params = self._add_api_key({
             "page": "dapi",
             "s": "post",
             "q": "index",
             "tags": tags,
             "json": 1,
-        }
-
-        params = self._add_api_key(params)
-
-        params = self._fill_dict(params, {
             "pid": page,
             "limit": limit,
         })
+
+        params = self._remove_dict_none_items(params)
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params,
@@ -91,7 +88,7 @@ class Gelbooru(Booru):
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        return self._fill_dict(params, {
+        return params.update({
             "user_id": self._user,
             "api_key": self._token,
         })

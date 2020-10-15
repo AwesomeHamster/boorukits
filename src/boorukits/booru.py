@@ -52,7 +52,8 @@ class Booru:
         url: str,
         params: Dict[str, str] = None,
         headers: Dict[str, str] = None,
-        data: Dict[str, str] = None,
+        json: Dict[str, Any] = None,
+        data: Any = None,
         **kwargs,
     ) -> Tuple[int, Union[Dict[str, str], None]]:
         """Send an HTTP POST request
@@ -71,6 +72,7 @@ class Booru:
             params=params,
             headers=headers,
             data=data,
+            json=json,
             **kwargs)
 
     async def _request(
@@ -79,7 +81,8 @@ class Booru:
         url: str,
         params: Dict[str, str] = None,
         headers: Dict[str, str] = None,
-        data: Dict[str, str] = None,
+        data: Any = None,
+        json: Dict[str, str] = None,
         **kwargs,
     ) -> Tuple[int, Union[Dict[str, str], None]]:
         """Send an HTTP request
@@ -90,15 +93,22 @@ class Booru:
             params (Dict[str, str], optional): url params. Defaults to None.
             headers (Dict[str, str], optional): http headers. Defaults to None.
             data (Dict[str, str], optional): http body data. Defaults to None.
+            json (Dict[str, str], optional): json serializable dict. Defaults to None.
 
         Returns:
             Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
         """
+        _params = self._remove_dict_none_items(params)
+        _headers = self._remove_dict_none_items(headers)
+        _json = self._remove_dict_none_items(json)
+
         async with ClientSession(loop=self._loop) as session:
             async with session.request(method,
                 url,
-                params=params,
-                headers=headers,
+                params=_params,
+                headers=_headers,
+                json=_json,
+                data=data,
                 proxy=self.proxy,
                 **kwargs) as response:
                 try:
@@ -107,24 +117,20 @@ class Booru:
                 except JSONDecodeError:
                     return response.status, None
 
-    def _fill_dict(
-        self,
-        original_dict: Dict[str, Any],
-        new_params: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """Fill parameters into dict and return a new one
+    def _remove_dict_none_items(
+            self, original_dict: Dict[str, Any]) -> Dict[str, Any]:
+        """Remove Null values in dict
 
         Args:
             original_dict (Dict[str, Any]): The original dict
-            new_params (Dict[str, Any]): Parameters
 
         Returns:
             Dict[str, Any]: A new dict
         """
         new_dict = original_dict.copy()
-        for k, v in new_params.items():
-            if k and v:
-                new_dict[k] = v
+        for k, v in new_dict.items():
+            if not v:
+                del new_dict[k]
         return new_dict
 
 
