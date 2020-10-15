@@ -38,15 +38,15 @@ class Gelbooru(Booru):
         self._root_url = root_url
 
     async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
-        params = {
+        params = self._add_api_key({})
+
+        params = self._remove_dict_none_items({
             "page": "dapi",
             "s": "post",
             "q": "index",
             "json": 1,
             "id": id,
-        }
-
-        params = self._add_api_key(params)
+        })
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params)
@@ -62,17 +62,16 @@ class Gelbooru(Booru):
         limit: int = None,
         **kwargs,
     ) -> Union[List[GelbooruImage], None]:
-        params = self._add_api_key({
-            "page": "dapi",
-            "s": "post",
-            "q": "index",
-            "tags": tags,
-            "json": 1,
-            "pid": page,
-            "limit": limit,
-        })
-
-        params = self._remove_dict_none_items(params)
+        params = self._remove_dict_none_items(
+            self._add_api_key({
+                "page": "dapi",
+                "s": "post",
+                "q": "index",
+                "tags": tags,
+                "json": 1,
+                "pid": page,
+                "limit": limit,
+            }))
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params,
@@ -86,7 +85,8 @@ class Gelbooru(Booru):
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        return params.update({
+        params.update({
             "user_id": self._user,
             "api_key": self._token,
         })
+        return params
