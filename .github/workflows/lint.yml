@@ -50,11 +50,6 @@ jobs:
         # install boorukits as editable package
         pip install -e .
 
-    - name: Test with pytest
-      env:
-        PYTHONPATH: '.:./src'
-        # danbooru token
-        DANBOORU_USER: ${{ secrets.DANBOORU_USER }}
-        DANBOORU_TOKEN: ${{ secrets.DANBOORU_TOKEN }}
+    - name: Lint with flake8
       run: |
-        pytest
+        flake8 . --count --show-source --statistics
