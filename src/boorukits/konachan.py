@@ -51,10 +51,11 @@ class Konachan(Booru):
             root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
-        super(Konachan, self).__init__(proxy=proxy, loop=loop)
-        self._user = user
-        self._token = token
-        self._root_url = root_url
+        super(Konachan, self).__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
 
     async def get_post(self, id: str) -> Union[KonachanImage, None]:
         """Get a specific post by id.
@@ -112,3 +113,20 @@ class Konachan(Booru):
             # default to "-1".
             res_list.append(KonachanImage(str(i.get("id", "-1")), i))
         return res_list
+
+
+class KonachanR18(Konachan):
+
+    def __init__(
+        self,
+        user: str = None,
+        token: str = None,
+        root_url: str = R18_API_URL,
+        proxy: Optional[str] = None,
+        loop: Optional[AbstractEventLoop] = None,
+    ):
+        super(KonachanR18, self).__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
