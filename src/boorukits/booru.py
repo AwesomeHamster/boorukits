@@ -28,7 +28,7 @@ class Booru:
         headers: Dict[str, str] = None,
         data: Dict[str, str] = None,
         **kwargs,
-    ) -> Tuple[int, Union[Dict[str, str], None]]:
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
         """Send an HTTP GET request
 
         Args:
@@ -38,7 +38,7 @@ class Booru:
             data (Dict[str, str], optional): http body data. Defaults to None.
 
         Returns:
-            Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
         """
         return await self._request("get",
             url,
@@ -55,7 +55,7 @@ class Booru:
         json: Dict[str, Any] = None,
         data: Any = None,
         **kwargs,
-    ) -> Tuple[int, Union[Dict[str, str], None]]:
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
         """Send an HTTP POST request
 
         Args:
@@ -65,7 +65,7 @@ class Booru:
             data (Dict[str, str], optional): http body data. Defaults to None.
 
         Returns:
-            Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
         """
         return await self._request("post",
             url,
@@ -84,7 +84,7 @@ class Booru:
         data: Any = None,
         json: Dict[str, str] = None,
         **kwargs,
-    ) -> Tuple[int, Union[Dict[str, str], None]]:
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
         """Send an HTTP request
 
         Args:
@@ -96,7 +96,7 @@ class Booru:
             json (Dict[str, str], optional): json serializable dict. Defaults to None.
 
         Returns:
-            Tuple[int, Union[Dict[str, str], None]]: tuple with response status code and returned JSON data.
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
         """
         _params = self._remove_dict_none_items(params)
         _headers = self._remove_dict_none_items(headers)
