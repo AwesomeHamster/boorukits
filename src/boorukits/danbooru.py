@@ -145,6 +145,8 @@ class Danbooru(Booru):
         res_list = list()
         for i in response:
             # some post may lacks "id" property,
-            # default to "-1".
-            res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
+            # just ignore them
+            if not i.get("id", None):
+                continue
+            res_list.append(DanbooruImage(str(i.get("id")), i))
         return res_list
