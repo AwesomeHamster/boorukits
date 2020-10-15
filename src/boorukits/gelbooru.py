@@ -38,9 +38,7 @@ class Gelbooru(Booru):
         self._root_url = root_url
 
     async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
-        params = self._add_api_key({})
-
-        params = self._remove_dict_none_items({
+        params = self._add_api_key({
             "page": "dapi",
             "s": "post",
             "q": "index",
@@ -62,16 +60,15 @@ class Gelbooru(Booru):
         limit: int = None,
         **kwargs,
     ) -> Union[List[GelbooruImage], None]:
-        params = self._remove_dict_none_items(
-            self._add_api_key({
-                "page": "dapi",
-                "s": "post",
-                "q": "index",
-                "tags": tags,
-                "json": 1,
-                "pid": page,
-                "limit": limit,
-            }))
+        params = self._add_api_key({
+            "page": "dapi",
+            "s": "post",
+            "q": "index",
+            "tags": tags,
+            "json": 1,
+            "pid": page,
+            "limit": limit,
+        })
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params,

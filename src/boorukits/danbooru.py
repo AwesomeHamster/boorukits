@@ -83,11 +83,11 @@ class Danbooru(Booru):
         Returns:
             Union[DanbooruImage, None]: DanbooruImage
         """
-        params = self._remove_dict_none_items({
+        params = {
             # api key
             "login": self._user,
             "api_key": self._token,
-        })
+        }
 
         code, response = await self._get(self._root_url + f"/posts/{id}.json",
             params=params)
@@ -122,7 +122,7 @@ class Danbooru(Booru):
             List[DanbooruImage]: a list contains `DanbooruImage`
         """
 
-        params = self._remove_dict_none_items({
+        params = {
             "tags": tags,
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
@@ -133,7 +133,7 @@ class Danbooru(Booru):
             "page": page,
             "limit": limit,
             "md5": md5,
-        })
+        }
 
         code, response = await self._get(
             self._root_url + "/posts.json",

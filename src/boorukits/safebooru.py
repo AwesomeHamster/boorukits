@@ -36,14 +36,13 @@ class Safebooru(Gelbooru):
 
     async def get_post(self, id: str = "") -> Union[SafebooruImage, None]:
 
-        params = self._remove_dict_none_items(
-            self._add_api_key({
-                "page": "dapi",
-                "s": "post",
-                "q": "index",
-                "json": 1,
-                "id": id,
-            }))
+        params = self._add_api_key({
+            "page": "dapi",
+            "s": "post",
+            "q": "index",
+            "json": 1,
+            "id": id,
+        })
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params)
@@ -60,16 +59,15 @@ class Safebooru(Gelbooru):
         **kwargs,
     ) -> Union[List[SafebooruImage], None]:
 
-        params = self._remove_dict_none_items(
-            self._add_api_key({
-                "page": "dapi",
-                "s": "post",
-                "q": "index",
-                "tags": tags,
-                "json": 1,
-                "pid": page,
-                "limit": limit,
-            }))
+        params = self._add_api_key({
+            "page": "dapi",
+            "s": "post",
+            "q": "index",
+            "tags": tags,
+            "json": 1,
+            "pid": page,
+            "limit": limit,
+        })
 
         code, response = await self._get(self._root_url + "/index.php",
             params=params,
