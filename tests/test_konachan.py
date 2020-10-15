@@ -3,8 +3,7 @@ import os
 from typing import List
 
 import pytest
-from boorukits import Konachan, KonachanImage
-from boorukits.konachan import KonachanR18
+from boorukits import Konachan, KonachanImage, KonachanR18
 
 from tests.utils import expect_image, expect_image_list
 
