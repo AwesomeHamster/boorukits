@@ -1,3 +1,4 @@
+from tests.utils import expect_image, expect_image_list
 from typing import List
 
 import pytest
@@ -10,15 +11,7 @@ async def test_get_posts():
     gelbooru = Gelbooru()
     response: List[GelbooruImage] = await gelbooru.get_posts("*")
 
-    assert isinstance(response, list)
-    assert len(response) > 0
-    assert isinstance(response[0], GelbooruImage)
-
-    img: GelbooruImage = response[0]
-    assert img.tags
-    assert isinstance(img.tags_list, list)
-    assert len(img.tags_list) >= 1
-    assert img.file_url
+    expect_image_list(response)
 
 
 @pytest.mark.asyncio
@@ -28,9 +21,4 @@ async def test_get_post():
     # https://gelbooru.com/index.php?page=post&s=view&id=5552990&tags=kokkoro_%28princess_connect%21%29
     img: GelbooruImage = await gelbooru.get_post("5552990")
 
-    assert isinstance(img, GelbooruImage)
-
-    assert img.tags
-    assert isinstance(img.tags_list, list)
-    assert len(img.tags_list) >= 1
-    assert img.file_url
+    expect_image(img)

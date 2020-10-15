@@ -1,5 +1,6 @@
 import asyncio
 import os
+from tests.utils import expect_image, expect_image_list
 from typing import List
 
 import pytest
@@ -36,15 +37,7 @@ async def test_get_posts():
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
 
     for response in done:
-        assert isinstance(response, list)
-        assert len(response) > 0
-        assert isinstance(response[0], DanbooruImage)
-
-        img: DanbooruImage = response[0]
-        assert img.tags
-        assert isinstance(img.tags_list, list)
-        assert len(img.tags_list) >= 1
-        assert img.file_url
+        expect_image_list(response)
 
 
 @pytest.mark.asyncio
@@ -57,10 +50,7 @@ async def test_posts_with_tags():
     done: List[List[DanbooruImage]] = await asyncio.gather(*get_posts)
 
     for response in done:
-        assert isinstance(response, list)
-        img = response[0]
-        assert isinstance(img.tags_list, list)
-        assert len(img.tags_list) >= 1
+        expect_image_list(response)
 
 
 @pytest.mark.asyncio
@@ -75,8 +65,4 @@ async def test_post_by_id():
     done: List[DanbooruImage] = await asyncio.gather(*get_post)
 
     for response in done:
-        assert isinstance(response, DanbooruImage)
-        assert response.id == "3134895"
-        assert response.file_url
-        assert response.sample_url
-        assert response.thumbnail_url
+        expect_image(response)
