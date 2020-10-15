@@ -1,5 +1,5 @@
 from asyncio import AbstractEventLoop
-from typing import Any, Dict, List, Optional, Union
+from typing import List, Optional, Union
 
 from .booru import Booru, BooruImage
 
@@ -53,6 +53,7 @@ class Danbooru(Booru):
         user: str = None,
         token: str = None,
         root_url: str = API_URL,
+        proxy: Optional[str] = None,
         loop: Optional[AbstractEventLoop] = None,
     ):
         """Create an instance of Danbooru.
@@ -67,7 +68,7 @@ class Danbooru(Booru):
             root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
-        super(Danbooru, self).__init__(loop)
+        super(Danbooru, self).__init__(proxy=proxy, loop=loop)
         self._user = user
         self._token = token
         self._root_url = root_url
@@ -82,7 +83,11 @@ class Danbooru(Booru):
         Returns:
             Union[DanbooruImage, None]: DanbooruImage
         """
-        params = self._add_api_key({})
+        params = {
+            # api key
+            "login": self._user,
+            "api_key": self._token,
+        }
 
         code, response = await self._get(self._root_url + f"/posts/{id}.json",
             params=params)
@@ -117,21 +122,18 @@ class Danbooru(Booru):
             List[DanbooruImage]: a list contains `DanbooruImage`
         """
 
-        params: Dict[str, Any] = {
+        params = {
             "tags": tags,
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
+            # api key
+            "login": self._user,
+            "api_key": self._token,
+            # other possible parameters
+            "page": page,
+            "limit": limit,
+            "md5": md5,
         }
-
-        params = self._add_api_key(params)
-
-        if page:
-            params["page"] = page
-        if limit:
-            params["limit"] = limit
-        if md5:
-            params["md5"] = md5
-            del params["tags"]
 
         code, response = await self._get(
             self._root_url + "/posts.json",
@@ -145,13 +147,3 @@ class Danbooru(Booru):
             # default to "-1".
             res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
         return res_list
-
-    def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        if self._user and self._token:
-            new_dict = params.copy()
-            new_dict.update({
-                "login": self._user,
-                "api_key": self._token,
-            })
-            return new_dict
-        return params

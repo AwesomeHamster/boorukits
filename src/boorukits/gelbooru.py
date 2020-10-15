@@ -1,11 +1,12 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from .booru import Booru, BooruImage
 
-API_URL = "https://gelbooru.com/"
+GELBOORU_API_URL = "https://gelbooru.com/"
 
 
 class GelbooruImage(BooruImage):
+
     def __init__(self, iid: str, data_dict: Dict[str, Any]):
         super().__init__(iid, data_dict)
 
@@ -22,44 +23,56 @@ class Gelbooru(Booru):
 
     See also: https://gelbooru.com/index.php?page=wiki&s=view&id=18780
     """
+
     def __init__(
-        self, user: str = None, token: str = None, root_url: str = API_URL, loop=None,
+        self,
+        user: str = None,
+        token: str = None,
+        root_url: str = GELBOORU_API_URL,
+        proxy: Optional[str] = None,
+        loop=None,
     ):
-        super().__init__(loop=loop)
+        super().__init__(proxy=proxy, loop=loop)
         self._user = user
         self._token = token
         self._root_url = root_url
 
     async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
-        params = {
+        params = self._add_api_key({
             "page": "dapi",
             "s": "post",
             "q": "index",
             "json": 1,
             "id": id,
-        }
-
-        params = self._add_api_key(params)
+        })
 
         code, response = await self._get(self._root_url + "/index.php",
-                                         params=params)
+            params=params)
 
         # gelbooru would return a list even specify an id.
         res_image = response[0]
         return GelbooruImage(str(res_image.get("id", "-1")), res_image)
-        
 
-    async def get_posts(self, tags: str = "") -> Union[List[GelbooruImage], None]:
-        params = {
+    async def get_posts(
+        self,
+        tags: str = "",
+        page: int = None,
+        limit: int = None,
+        **kwargs,
+    ) -> Union[List[GelbooruImage], None]:
+        params = self._add_api_key({
             "page": "dapi",
             "s": "post",
             "q": "index",
+            "tags": tags,
             "json": 1,
-        }
+            "pid": page,
+            "limit": limit,
+        })
 
-        params = self._add_api_key(params)
-
-        code, response = await self._get(self._root_url + "/index.php", params=params)
+        code, response = await self._get(self._root_url + "/index.php",
+            params=params,
+            **kwargs)
 
         res_list = list()
         for i in response:
@@ -69,10 +82,8 @@ class Gelbooru(Booru):
         return res_list
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
-        if self._user and self._token:
-            new_dict = params.copy()
-            new_dict.update(
-                {"login": self._user, "api_key": self._token,}
-            )
-            return new_dict
+        params.update({
+            "user_id": self._user,
+            "api_key": self._token,
+        })
         return params

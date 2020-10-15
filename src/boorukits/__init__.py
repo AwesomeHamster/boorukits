@@ -1,6 +1,7 @@
 from .booru import Booru, BooruImage
 from .danbooru import Danbooru, DanbooruImage
 from .gelbooru import Gelbooru, GelbooruImage
+from .safebooru import Safebooru, SafebooruImage
 from .errors import BooruError, InvalidResponseError
 
 __all__ = [
@@ -10,6 +11,8 @@ __all__ = [
     "DanbooruImage",
     "Gelbooru",
     "GelbooruImage",
+    "Safebooru",
+    "SafebooruImage",
     "BooruError",
     "InvalidResponseError",
 ]
