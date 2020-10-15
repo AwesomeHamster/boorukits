@@ -1,6 +1,7 @@
 from typing import List, Optional, Union
 
-from boorukits.booru import Booru, BooruImage
+from boorukits.booru import BooruImage
+from .gelbooru import Gelbooru
 
 SAFEBOORU_API_URL = "https://safebooru.org/"
 
@@ -15,7 +16,7 @@ class SafebooruImage(BooruImage):
             self._data_dict.get("image", "")
 
 
-class Safebooru(Booru):
+class Safebooru(Gelbooru):
     """Wrap API of Safebooru (https://safebooru.org/)
     """
 

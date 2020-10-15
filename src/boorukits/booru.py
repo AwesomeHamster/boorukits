@@ -127,10 +127,12 @@ class Booru:
         Returns:
             Dict[str, Any]: A new dict
         """
-        new_dict = original_dict.copy()
-        for k, v in new_dict.items():
-            if not v:
-                del new_dict[k]
+        if not original_dict:
+            return original_dict
+        new_dict = dict()
+        for k, v in original_dict.items():
+            if k and v:
+                new_dict[k] = v
         return new_dict
 
 
