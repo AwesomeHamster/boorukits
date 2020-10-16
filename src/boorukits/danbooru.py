@@ -68,10 +68,11 @@ class Danbooru(Booru):
             root_url (str, optional): API URL root. Defaults to API_URL.
             loop (Optional[AbstractEventLoop], optional): EventLoop. Defaults to None.
         """
-        super(Danbooru, self).__init__(proxy=proxy, loop=loop)
-        self._user = user
-        self._token = token
-        self._root_url = root_url
+        super(Danbooru, self).__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
 
     async def get_post(self, id: str) -> Union[DanbooruImage, None]:
         """Get a specific post by id.
@@ -85,11 +86,11 @@ class Danbooru(Booru):
         """
         params = {
             # api key
-            "login": self._user,
-            "api_key": self._token,
+            "login": self.user,
+            "api_key": self.token,
         }
 
-        code, response = await self._get(self._root_url + f"/posts/{id}.json",
+        code, response = await self._get(self.root_url + f"/posts/{id}.json",
             params=params)
 
         if code == 404:
@@ -127,8 +128,8 @@ class Danbooru(Booru):
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
             # api key
-            "login": self._user,
-            "api_key": self._token,
+            "login": self.user,
+            "api_key": self.token,
             # other possible parameters
             "page": page,
             "limit": limit,
@@ -136,7 +137,7 @@ class Danbooru(Booru):
         }
 
         code, response = await self._get(
-            self._root_url + "/posts.json",
+            self.root_url + "/posts.json",
             params=params,
             **kwargs,
         )
@@ -144,6 +145,8 @@ class Danbooru(Booru):
         res_list = list()
         for i in response:
             # some post may lacks "id" property,
-            # default to "-1".
-            res_list.append(DanbooruImage(str(i.get("id", "-1")), i))
+            # just ignore them
+            if not i.get("id", None):
+                continue
+            res_list.append(DanbooruImage(str(i.get("id")), i))
         return res_list

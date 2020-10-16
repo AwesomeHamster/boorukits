@@ -32,10 +32,11 @@ class Gelbooru(Booru):
         proxy: Optional[str] = None,
         loop=None,
     ):
-        super().__init__(proxy=proxy, loop=loop)
-        self._user = user
-        self._token = token
-        self._root_url = root_url
+        super().__init__(user=user,
+            token=token,
+            root_url=root_url,
+            proxy=proxy,
+            loop=loop)
 
     async def get_post(self, id: str = "") -> Union[GelbooruImage, None]:
         params = self._add_api_key({
@@ -46,7 +47,7 @@ class Gelbooru(Booru):
             "id": id,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params)
 
         # gelbooru would return a list even specify an id.
@@ -70,7 +71,7 @@ class Gelbooru(Booru):
             "limit": limit,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params,
             **kwargs)
 
@@ -83,7 +84,7 @@ class Gelbooru(Booru):
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         params.update({
-            "user_id": self._user,
-            "api_key": self._token,
+            "user_id": self.user,
+            "api_key": self.token,
         })
         return params

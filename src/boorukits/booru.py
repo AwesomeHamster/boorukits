@@ -8,134 +8,6 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from aiohttp import ClientSession
 
 
-class Booru:
-    """General class wrapping *booru-like gallary website API.
-
-    """
-
-    def __init__(
-        self,
-        proxy: Optional[str] = None,
-        loop: Optional[AbstractEventLoop] = None,
-    ):
-        self.proxy = proxy
-        self._loop = loop
-
-    async def _get(
-        self,
-        url: str,
-        params: Dict[str, str] = None,
-        headers: Dict[str, str] = None,
-        data: Dict[str, str] = None,
-        **kwargs,
-    ) -> Tuple[int, Union[Dict[str, Any], None]]:
-        """Send an HTTP GET request
-
-        Args:
-            url (str): URL in string
-            params (Dict[str, str], optional): url params. Defaults to None.
-            headers (Dict[str, str], optional): http headers. Defaults to None.
-            data (Dict[str, str], optional): http body data. Defaults to None.
-
-        Returns:
-            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
-        """
-        return await self._request("get",
-            url,
-            params=params,
-            headers=headers,
-            data=data,
-            **kwargs)
-
-    async def _post(
-        self,
-        url: str,
-        params: Dict[str, str] = None,
-        headers: Dict[str, str] = None,
-        json: Dict[str, Any] = None,
-        data: Any = None,
-        **kwargs,
-    ) -> Tuple[int, Union[Dict[str, Any], None]]:
-        """Send an HTTP POST request
-
-        Args:
-            url (str): URL in string
-            params (Dict[str, str], optional): url params. Defaults to None.
-            headers (Dict[str, str], optional): http headers. Defaults to None.
-            data (Dict[str, str], optional): http body data. Defaults to None.
-
-        Returns:
-            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
-        """
-        return await self._request("post",
-            url,
-            params=params,
-            headers=headers,
-            data=data,
-            json=json,
-            **kwargs)
-
-    async def _request(
-        self,
-        method: str,
-        url: str,
-        params: Dict[str, str] = None,
-        headers: Dict[str, str] = None,
-        data: Any = None,
-        json: Dict[str, str] = None,
-        **kwargs,
-    ) -> Tuple[int, Union[Dict[str, Any], None]]:
-        """Send an HTTP request
-
-        Args:
-            method (str): HTTP method (GET, POST, PUT...)
-            url (str): URL in string
-            params (Dict[str, str], optional): url params. Defaults to None.
-            headers (Dict[str, str], optional): http headers. Defaults to None.
-            data (Dict[str, str], optional): http body data. Defaults to None.
-            json (Dict[str, str], optional): json serializable dict. Defaults to None.
-
-        Returns:
-            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
-        """
-        _params = self._remove_dict_none_items(params)
-        _headers = self._remove_dict_none_items(headers)
-        _json = self._remove_dict_none_items(json)
-
-        async with ClientSession(loop=self._loop) as session:
-            async with session.request(method,
-                url,
-                params=_params,
-                headers=_headers,
-                json=_json,
-                data=data,
-                proxy=self.proxy,
-                **kwargs) as response:
-                try:
-                    return response.status, await response.json(
-                        content_type=None)
-                except JSONDecodeError:
-                    return response.status, None
-
-    def _remove_dict_none_items(
-            self, original_dict: Dict[str, Any]) -> Dict[str, Any]:
-        """Remove Null values in dict
-
-        Args:
-            original_dict (Dict[str, Any]): The original dict
-
-        Returns:
-            Dict[str, Any]: A new dict
-        """
-        if not original_dict:
-            return original_dict
-        new_dict = dict()
-        for k, v in original_dict.items():
-            if k and v:
-                new_dict[k] = v
-        return new_dict
-
-
 class BooruImage:
 
     def __init__(
@@ -235,3 +107,143 @@ class BooruImage:
             str,: Image thumbnail url
         """
         return self._data_dict.get("thumbnail_url", "")
+
+
+class Booru:
+    """General class wrapping *booru-like gallary website API.
+
+    """
+
+    def __init__(
+        self,
+        user: str = None,
+        token: str = None,
+        root_url: str = None,
+        proxy: Optional[str] = None,
+        loop: Optional[AbstractEventLoop] = None,
+    ):
+        self.user = user
+        self.token = token
+        self.root_url = root_url
+        self.proxy = proxy
+        self.loop = loop
+
+    async def _get(
+        self,
+        url: str,
+        params: Dict[str, str] = None,
+        headers: Dict[str, str] = None,
+        data: Dict[str, str] = None,
+        **kwargs,
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
+        """Send an HTTP GET request
+
+        Args:
+            url (str): URL in string
+            params (Dict[str, str], optional): url params. Defaults to None.
+            headers (Dict[str, str], optional): http headers. Defaults to None.
+            data (Dict[str, str], optional): http body data. Defaults to None.
+
+        Returns:
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
+        """
+        return await self._request("get",
+            url,
+            params=params,
+            headers=headers,
+            data=data,
+            **kwargs)
+
+    async def _post(
+        self,
+        url: str,
+        params: Dict[str, str] = None,
+        headers: Dict[str, str] = None,
+        json: Dict[str, Any] = None,
+        data: Any = None,
+        **kwargs,
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
+        """Send an HTTP POST request
+
+        Args:
+            url (str): URL in string
+            params (Dict[str, str], optional): url params. Defaults to None.
+            headers (Dict[str, str], optional): http headers. Defaults to None.
+            data (Dict[str, str], optional): http body data. Defaults to None.
+
+        Returns:
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
+        """
+        return await self._request("post",
+            url,
+            params=params,
+            headers=headers,
+            data=data,
+            json=json,
+            **kwargs)
+
+    async def _request(
+        self,
+        method: str,
+        url: str,
+        params: Dict[str, str] = None,
+        headers: Dict[str, str] = None,
+        data: Any = None,
+        json: Dict[str, str] = None,
+        **kwargs,
+    ) -> Tuple[int, Union[Dict[str, Any], None]]:
+        """Send an HTTP request
+
+        Args:
+            method (str): HTTP method (GET, POST, PUT...)
+            url (str): URL in string
+            params (Dict[str, str], optional): url params. Defaults to None.
+            headers (Dict[str, str], optional): http headers. Defaults to None.
+            data (Dict[str, str], optional): http body data. Defaults to None.
+            json (Dict[str, str], optional): json serializable dict. Defaults to None.
+
+        Returns:
+            Tuple[int, Union[Dict[str, Any], None]]: tuple with response status code and returned JSON data.
+        """
+        _params = self._remove_dict_none_items(params)
+        _headers = self._remove_dict_none_items(headers)
+        _json = self._remove_dict_none_items(json)
+
+        async with ClientSession(loop=self.loop) as session:
+            async with session.request(method,
+                url,
+                params=_params,
+                headers=_headers,
+                json=_json,
+                data=data,
+                proxy=self.proxy,
+                **kwargs) as response:
+                try:
+                    return response.status, await response.json(
+                        content_type=None)
+                except JSONDecodeError:
+                    return response.status, None
+
+    def _remove_dict_none_items(
+            self, original_dict: Dict[str, Any]) -> Dict[str, Any]:
+        """Remove Null values in dict
+
+        Args:
+            original_dict (Dict[str, Any]): The original dict
+
+        Returns:
+            Dict[str, Any]: A new dict
+        """
+        if not original_dict:
+            return original_dict
+        new_dict = dict()
+        for k, v in original_dict.items():
+            if k and v:
+                new_dict[k] = v
+        return new_dict
+
+    async def get_post(id: str = "") -> Union[BooruImage, None]:
+        pass
+
+    async def get_posts(tags: str = "") -> Union[List[BooruImage], None]:
+        pass

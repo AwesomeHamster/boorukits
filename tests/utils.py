@@ -7,7 +7,8 @@ def expect_image(img: BooruImage):
     assert img.tags
     assert isinstance(img.tags_list, list)
     assert len(img.tags_list) >= 1
-    assert img.file_url
+    # FIXME: At least one url available?
+    assert img.file_url or img.sample_url or img.thumbnail_url
 
 
 def expect_image_list(img_list: List[BooruImage]):
