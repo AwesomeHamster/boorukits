@@ -47,7 +47,7 @@ class Gelbooru(Booru):
             "id": id,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params)
 
         # gelbooru would return a list even specify an id.
@@ -71,7 +71,7 @@ class Gelbooru(Booru):
             "limit": limit,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params,
             **kwargs)
 
@@ -84,7 +84,7 @@ class Gelbooru(Booru):
 
     def _add_api_key(self, params: Dict[str, str]) -> Dict[str, str]:
         params.update({
-            "user_id": self._user,
-            "api_key": self._token,
+            "user_id": self.user,
+            "api_key": self.token,
         })
         return params

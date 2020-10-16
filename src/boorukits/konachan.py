@@ -94,15 +94,15 @@ class Konachan(Booru):
         params = {
             "tags": tags,
             # api key
-            "login": self._user,
-            "api_key": self._token,
+            "login": self.user,
+            "api_key": self.token,
             # other possible parameters
             "page": page,
             "limit": limit,
         }
 
         code, response = await self._get(
-            self._root_url + "/post.json",
+            self.root_url + "/post.json",
             params=params,
             **kwargs,
         )

@@ -86,11 +86,11 @@ class Danbooru(Booru):
         """
         params = {
             # api key
-            "login": self._user,
-            "api_key": self._token,
+            "login": self.user,
+            "api_key": self.token,
         }
 
-        code, response = await self._get(self._root_url + f"/posts/{id}.json",
+        code, response = await self._get(self.root_url + f"/posts/{id}.json",
             params=params)
 
         if code == 404:
@@ -128,8 +128,8 @@ class Danbooru(Booru):
             "random": 1 if random else 0,
             "raw": 1 if raw else 0,
             # api key
-            "login": self._user,
-            "api_key": self._token,
+            "login": self.user,
+            "api_key": self.token,
             # other possible parameters
             "page": page,
             "limit": limit,
@@ -137,7 +137,7 @@ class Danbooru(Booru):
         }
 
         code, response = await self._get(
-            self._root_url + "/posts.json",
+            self.root_url + "/posts.json",
             params=params,
             **kwargs,
         )

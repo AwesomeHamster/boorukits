@@ -44,7 +44,7 @@ class Safebooru(Gelbooru):
             "id": id,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params)
 
         # gelbooru would return a list even specify an id.
@@ -69,7 +69,7 @@ class Safebooru(Gelbooru):
             "limit": limit,
         })
 
-        code, response = await self._get(self._root_url + "/index.php",
+        code, response = await self._get(self.root_url + "/index.php",
             params=params,
             **kwargs)
 
