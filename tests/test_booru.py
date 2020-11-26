@@ -32,5 +32,5 @@ async def get_posts(name: str):
         expect_image_list(response)
         img_id = response[0].id
         img = await booru.get_post(img_id)
-        
+
         expect_image(img)
